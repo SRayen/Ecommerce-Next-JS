@@ -8,7 +8,6 @@ export default function ProductDetails({
   params: { slug: string };
 }) {
   const product = data.products.find((x) => x.slug === params.slug);
-  console.log("=>", product);
   if (!product) {
     return <div>Product not found</div>;
   }
@@ -17,7 +16,7 @@ export default function ProductDetails({
       <div className="my-2">
         <Link href="/">back to products</Link>
       </div>
-      <div className="grid md:grid-cols-4 md:gap-3">
+      <div className="grid md:grid-cols-4 gap-3">
         <div className="md:col-span-2">
           <Image
             src={product.image}
