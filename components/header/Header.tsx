@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
-
+import Menu from "./Menu";
+Menu;
 export default function Header() {
   return (
     <header>
@@ -9,18 +10,7 @@ export default function Header() {
           <Link href="/" className="btn btn-ghost text-lg">
             SRayen E-Commerce
           </Link>
-          <ul className="flex">
-            <li>
-              <Link className="btn btn-ghost rounded-btn" href="/cart">
-                Cart
-              </Link>
-            </li>
-            <li>
-              <Link className="btn btn-ghost rounded-btn" href="/signin">
-                Sign in
-              </Link>
-            </li>
-          </ul>
+          <Menu />
         </div>
       </nav>
     </header>
