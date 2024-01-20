@@ -2,13 +2,30 @@ import data from "@/lib/data";
 import Link from "next/link";
 import Image from "next/image";
 import AddToCart from "@/components/products/AddToCart";
+import productService from "@/lib/services/productService";
+import { convertDocToObj } from "@/lib/utils";
 
-export default function ProductDetails({
+export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
 }) {
-  const product = data.products.find((x) => x.slug === params.slug);
+  const product = await productService.getBySlug(params.slug);
+  if (!product) {
+    return { title: "Product not found" };
+  }
+  return {
+    title: product.name,
+    description: product.description,
+  };
+}
+
+export default async function ProductDetails({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const product = await productService.getBySlug(params.slug);
   if (!product) {
     return <div>Product not found</div>;
   }
@@ -60,8 +77,17 @@ export default function ProductDetails({
               </div>
               {product.countInStock !== 0 && (
                 <div className="card-actions justify-center">
+                  {/* To prevent this warning: Warning: Only plain objects can be
+                  passed to Client Components from Server Components. 
+                  => we will use convertDocToObj
+                  */}
                   <AddToCart
-                    item={{ ...product, qty: 0, color: "", size: "" }}
+                    item={{
+                      ...convertDocToObj(product),
+                      qty: 0,
+                      color: "",
+                      size: "",
+                    }}
                   />
                 </div>
               )}
