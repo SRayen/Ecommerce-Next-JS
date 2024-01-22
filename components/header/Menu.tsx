@@ -68,9 +68,6 @@ export default function Menu() {
             </button>
           </li>
         )}
-        <li>
-          <button className="btn btn-ghost rounded-btn">Sign in</button>
-        </li>
       </ul>
     </div>
   );
