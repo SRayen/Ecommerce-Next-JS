@@ -1,5 +1,6 @@
 "use client";
 import useCartService from "@/lib/hooks/useCartStore";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
@@ -11,6 +12,10 @@ export default function Menu() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const signoutHandler = () => {
+    signOut({ callbackUrl: "/signin" });
+  };
 
   return (
     <div>
