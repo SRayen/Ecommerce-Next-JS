@@ -1,27 +1,29 @@
-"use client";
-import useCartService from "@/lib/hooks/useCartStore";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
+'use client'
+
+import useCartService from '@/lib/hooks/useCartStore'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 export default function CartDetails() {
-  const router = useRouter();
-  const { items, itemsPrice, decrease, increase } = useCartService();
+  const router = useRouter()
+  const { items, itemsPrice, decrease, increase } = useCartService()
 
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(false)
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    setMounted(true)
+  }, [])
 
-  if (!mounted) return <></>;
+  if (!mounted) return <></>
 
   return (
     <>
       <h1 className="py-4 text-2xl">Shopping Cart</h1>
+
       {items.length === 0 ? (
         <div>
-          Cart is empty. <Link href="/">Go shopping</Link>{" "}
+          Cart is empty. <Link href="/">Go shopping</Link>
         </div>
       ) : (
         <div className="grid md:grid-cols-4 md:gap-5">
@@ -74,16 +76,23 @@ export default function CartDetails() {
               </tbody>
             </table>
           </div>
-
           <div>
             <div className="card bg-base-300">
               <div className="card-body">
                 <ul>
                   <li>
                     <div className="pb-3 text-xl">
-                      Subtotal ({items.reduce((acc, item) => acc + item.qty, 0)}
-                      ) : ${itemsPrice}
+                      Subtotal ({items.reduce((a, c) => a + c.qty, 0)}) : $
+                      {itemsPrice}
                     </div>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => router.push('/shipping')}
+                      className="btn btn-primary w-full"
+                    >
+                      Proceed to Checkout
+                    </button>
                   </li>
                 </ul>
               </div>
@@ -92,5 +101,5 @@ export default function CartDetails() {
         </div>
       )}
     </>
-  );
+  )
 }
