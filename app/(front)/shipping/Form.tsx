@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import Link from "next/link";
 import useCartService from "@/lib/hooks/useCartStore";
 import { ShippingAddress } from "@/lib/models/OrderModel";
 import CheckoutSteps from "@/components/CheckoutSteps";

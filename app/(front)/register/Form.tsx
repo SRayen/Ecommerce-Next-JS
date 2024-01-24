@@ -64,7 +64,6 @@ const Form = () => {
         email,
         password,
       });
-      console.log("res===>", res);
       if (res.status === 201) {
         return router.push(
           `/signin?callbackUrl=${callbackUrl}&success=Account has been created`
