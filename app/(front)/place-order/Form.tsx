@@ -50,7 +50,8 @@ const Form = () => {
     if (items.length === 0) {
       return router.push("/");
     }
-  }, [paymentMethod, router, items.length]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paymentMethod, router]);
 
   //To prevent the error of not matching client & server result
   const [mounted, setMounted] = useState(false);
