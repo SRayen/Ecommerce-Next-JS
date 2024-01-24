@@ -6,55 +6,40 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
-export default function OrderDetails({
-  orderId,
-  paypalClientId,
-}: {
-  orderId: string;
-  paypalClientId: string;
-}) {
+export default function OrderDetails({ orderId }: { orderId: string }) {
   const { trigger: deliverOrder, isMutating: isDelivering } = useSWRMutation(
     `/api/orders/${orderId}`,
     async (url) => {
-      const res = await fetch(`/api/admin/orders/${orderId}/deliver`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      res.ok
-        ? toast.success("Order delivered successfully")
-        : toast.error(data.message);
+      const response = await axios.put(`/api/admin/orders/${orderId}/deliver`);
+
+      if (response.status === 201) {
+        toast.success("Order delivered successfully");
+      } else {
+        toast.error(data.message);
+      }
     }
   );
-
+  const router = useRouter();
   const { data: session } = useSession();
-  console.log(session);
-  function createPayPalOrder() {
-    return fetch(`/api/orders/${orderId}/create-paypal-order`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((order) => order.id);
-  }
 
-  function onApprovePayPalOrder(data: any) {
-    return fetch(`/api/orders/${orderId}/capture-paypal-order`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((orderData) => {
-        toast.success("Order paid successfully");
-      });
+  async function createPayPalOrder() {
+    try {
+      const response = await axios.post(
+        `/api/orders/${orderId}/create-stripe-order`
+      );
+      if (response.status === 201) {
+        router.push(response.data);
+      } else {
+        const errorData = response.data;
+      }
+    } catch (error: any) {
+      error?.response?.data?.message
+        ? toast.error(error.response.data.message)
+        : toast.error("An unexpected error occurred. Please try again later.");
+    }
   }
 
   const { data, error } = useSWR(`/api/orders/${orderId}`);
@@ -184,32 +169,9 @@ export default function OrderDetails({
                   </div>
                 </li>
 
-                {/* {!isPaid && paymentMethod === "PayPal" && (
-                  <li>
-                    <PayPalScriptProvider
-                      options={{ clientId: paypalClientId }}
-                    >
-                      <PayPalButtons
-                        createOrder={createPayPalOrder}
-                        onApprove={onApprovePayPalOrder}
-                      />
-                    </PayPalScriptProvider>
-                  </li>
-                )}
-                {session?.user.isAdmin && (
-                  <li>
-                    <button
-                      className="btn w-full my-2"
-                      onClick={() => deliverOrder()}
-                      disabled={isDelivering}
-                    >
-                      {isDelivering && (
-                        <span className="loading loading-spinner"></span>
-                      )}
-                      Mark as delivered
-                    </button>
-                  </li>
-                )} */}
+                <li>
+                  <button onClick={() => createPayPalOrder()}>test pay</button>
+                </li>
               </ul>
             </div>
           </div>
