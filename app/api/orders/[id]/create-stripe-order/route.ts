@@ -47,7 +47,7 @@ export const POST = auth(async (...request: any) => {
         line_items: stripeItems,
         mode: "payment",
         customer_email: order.user.email,
-        success_url: "http://localhost:3000/success",
+        success_url: process.env.NEXTAUTH_URL + "order/" + order._id,
         cancel_url: "http://localhost:3000/cancel",
         shipping_options: [
           {
