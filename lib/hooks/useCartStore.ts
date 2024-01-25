@@ -20,7 +20,7 @@ const initialState: Cart = {
   taxPrice: 0,
   shippingPrice: 0,
   totalPrice: 0,
-  paymentMethod: "Paypal",
+  paymentMethod: "Stripe",
   shippingAddress: {
     fullName: "",
     address: "",
@@ -96,6 +96,9 @@ export default function useCartService() {
     },
     clear: () => {
       cartStore.setState({ items: [] });
+    },
+    init: () => {
+      cartStore.setState(initialState);
     },
   };
 }

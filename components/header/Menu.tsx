@@ -8,7 +8,7 @@ import ChevronDown from "@/icons/ChevronDown";
 import React from "react";
 
 export default function Menu() {
-  const { items } = useCartService();
+  const { items, init } = useCartService();
   const [mounted, setMounted] = useState(false); //if true => client side
   useEffect(() => {
     setMounted(true);
@@ -16,6 +16,7 @@ export default function Menu() {
 
   const signoutHandler = () => {
     signOut({ callbackUrl: "/signin" });
+    init(); //remove all user info (saved in CartStore)
   };
 
   const { data: session } = useSession();
@@ -48,6 +49,9 @@ export default function Menu() {
                   tabIndex={0}
                   className="menu dropdown-content z-[1] p-2 shadow bg-base-300 rounded-box w-52"
                 >
+                  <li>
+                    <Link href="/order-history">Order history</Link>
+                  </li>
                   <li onClick={handleClick}>
                     <button type="button" onClick={signoutHandler}>
                       Sign out
