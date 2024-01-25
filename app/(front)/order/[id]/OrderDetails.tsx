@@ -8,24 +8,12 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import moment from "moment";
 
 export default function OrderDetails({ orderId }: { orderId: string }) {
-  const { trigger: deliverOrder, isMutating: isDelivering } = useSWRMutation(
-    `/api/orders/${orderId}`,
-    async (url) => {
-      const response = await axios.put(`/api/admin/orders/${orderId}/deliver`);
-
-      if (response.status === 201) {
-        toast.success("Order delivered successfully");
-      } else {
-        toast.error(data.message);
-      }
-    }
-  );
   const router = useRouter();
-  const { data: session } = useSession();
 
-  async function createPayPalOrder() {
+  async function createStripeOrder() {
     try {
       const response = await axios.post(
         `/api/orders/${orderId}/create-stripe-order`
@@ -64,6 +52,7 @@ export default function OrderDetails({ orderId }: { orderId: string }) {
     deliveredAt,
     isPaid,
     paidAt,
+    updatedAt,
   } = data;
 
   return (
@@ -92,7 +81,9 @@ export default function OrderDetails({ orderId }: { orderId: string }) {
               <h2 className="card-title">Payment Method</h2>
               <p>{paymentMethod}</p>
               {isPaid ? (
-                <div className="text-success">Paid at {paidAt}</div>
+                <div className="text-success">
+                  Paid {moment(updatedAt).fromNow()}
+                </div>
               ) : (
                 <div className="text-error">Not Paid</div>
               )}
@@ -168,13 +159,17 @@ export default function OrderDetails({ orderId }: { orderId: string }) {
                     <div>${totalPrice}</div>
                   </div>
                 </li>
-
-                <li>
-                  <button onClick={() => createPayPalOrder()}>test pay</button>
-                </li>
               </ul>
             </div>
           </div>
+          {!isPaid && (
+            <button
+              onClick={() => createStripeOrder()}
+              className="btn btn-outline btn-primary mt-3 w-full"
+            >
+              Pay ${totalPrice}
+            </button>
+          )}
         </div>
       </div>
     </div>
