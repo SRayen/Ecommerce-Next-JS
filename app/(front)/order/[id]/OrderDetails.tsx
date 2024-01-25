@@ -52,7 +52,6 @@ export default function OrderDetails({ orderId }: { orderId: string }) {
     deliveredAt,
     isPaid,
     paidAt,
-    updatedAt,
   } = data;
 
   return (
@@ -82,7 +81,7 @@ export default function OrderDetails({ orderId }: { orderId: string }) {
               <p>{paymentMethod}</p>
               {isPaid ? (
                 <div className="text-success">
-                  Paid {moment(updatedAt).fromNow()}
+                  Paid {moment(paidAt).fromNow()}
                 </div>
               ) : (
                 <div className="text-error">Not Paid</div>
