@@ -42,7 +42,6 @@ export const POST = auth(async (...request: any) => {
         },
         quantity: 1,
       });
-
       const stripeSession = await stripe.checkout.sessions.create({
         line_items: stripeItems,
         mode: "payment",
@@ -62,7 +61,6 @@ export const POST = auth(async (...request: any) => {
           },
         ],
       });
-
       return Response.json(stripeSession.url, { status: 201 });
     } catch (err: any) {
       return Response.json(
