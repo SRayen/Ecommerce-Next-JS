@@ -1,4 +1,4 @@
-export default function ChevronDown({ className = "w-6 h-6" }) {
+export default function ChevronDown() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
