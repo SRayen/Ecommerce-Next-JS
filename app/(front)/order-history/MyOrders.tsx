@@ -39,7 +39,7 @@ export default function MyOrders() {
         </thead>
         <tbody>
           {orders.map((order: Order) => (
-            <tr key={order._id} className="hover:bg-green-50">
+            <tr key={order._id} className="hover:bg-red-500">
               <td>{order._id.substring(20, 24)}</td>
               <td>{order.createdAt.substring(0, 10)}</td>
               <td>${order.totalPrice}</td>

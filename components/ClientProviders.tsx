@@ -1,14 +1,22 @@
 "use client";
 import { cartStore } from "@/lib/hooks/useCartStore";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { SWRConfig } from "swr";
+import useLayoutService from "@/lib/hooks/useLayout";
 
 export default function ClientProviders({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { theme } = useLayoutService();
+  const [selectedTheme, setSelectedTheme] = useState("system");
+
+  useEffect(() => {
+    setSelectedTheme(theme);
+  }, [theme]);
+
   //reload / rehydrate the data in the cart store (exp:if we have 2 window of the project & we make a change in one => the other will be updated )
   const updateStore = () => {
     cartStore.persist.rehydrate();
@@ -37,8 +45,10 @@ export default function ClientProviders({
         },
       }}
     >
-      <Toaster />
-      {children}
+      <div data-theme={selectedTheme}>
+        <Toaster />
+        {children}
+      </div>
     </SWRConfig>
   );
 }

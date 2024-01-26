@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import ChevronDown from "@/icons/ChevronDown";
+import useLayoutService from "@/lib/hooks/useLayout";
+import SunIcon from "@/icons/SunIcon";
+import MoonIcon from "@/icons/MoonIcon";
 
 import React from "react";
 
@@ -20,6 +23,9 @@ export default function Menu() {
   };
 
   const { data: session } = useSession();
+
+  const { theme, toggleTheme } = useLayoutService();
+
   const handleClick = () => {
     (document.activeElement as HTMLElement).blur();
   };
@@ -27,6 +33,22 @@ export default function Menu() {
   return (
     <div>
       <ul className="flex items-stretch">
+        <li>
+          {mounted && (
+            <label className="swap swap-rotate">
+              {/* this hidden checkbox controls the state */}
+              <input
+                type="checkbox"
+                checked={theme === "light"}
+                onChange={toggleTheme}
+              />
+
+              <SunIcon />
+
+              <MoonIcon />
+            </label>
+          )}
+        </li>
         <li>
           <Link className="btn btn-ghost rounded-btn" href="/cart">
             Cart
