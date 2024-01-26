@@ -54,7 +54,9 @@ export default function MyOrders() {
                   : "not delivered"}
               </td>
               <td>
-                <Link href={`/order/${order._id}`}>Details</Link>
+                <Link href={`/order/${order._id}`}>
+                  <span className="font-bold">Details</span>
+                </Link>
               </td>
             </tr>
           ))}
