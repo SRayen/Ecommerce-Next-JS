@@ -22,6 +22,8 @@ const Form = () => {
     clear,
   } = useCartService();
 
+  //We  used  useSWRMutation as a hook for remote mutations
+  //Exp:  const { trigger } = useSWRMutation('/api/user', updateUser, options)
   const { trigger: placeOrder, isMutating: isPlacing } = useSWRMutation(
     `/api/orders/mine`, //When we have a new order => this API will be revalidated & add the new order to this API
     async (url) => {
@@ -50,7 +52,7 @@ const Form = () => {
     if (items.length === 0) {
       return router.push("/");
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paymentMethod, router]);
 
   //To prevent the error of not matching client & server result

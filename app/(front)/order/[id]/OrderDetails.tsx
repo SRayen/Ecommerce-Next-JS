@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import useSWR from "swr";
-import useSWRMutation from "swr/mutation";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import moment from "moment";
